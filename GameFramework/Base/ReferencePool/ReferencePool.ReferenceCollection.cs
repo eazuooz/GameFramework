@@ -68,7 +68,7 @@ namespace GameFramework
                 reference.Clear();
                 lock (mReferences)
                 {
-                    if (mEnableStrictCheck && mReferences.Contains(reference))
+                    if (bEnableStrictCheck && mReferences.Contains(reference))
                     {
                         throw new GameFrameworkException("The reference has been released.");
                     }

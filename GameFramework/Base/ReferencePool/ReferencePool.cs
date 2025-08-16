@@ -13,18 +13,18 @@ namespace GameFramework
 {
     public static partial class ReferencePool
     {
-        private static readonly Dictionary<Type, ReferenceCollection> s_ReferenceCollections = new Dictionary<Type, ReferenceCollection>();
-        private static bool mEnableStrictCheck = false;
+        private static readonly Dictionary<Type, ReferenceCollection> ReferenceCollections = new Dictionary<Type, ReferenceCollection>();
+        private static bool bEnableStrictCheck = false;
 
         public static bool EnableStrictCheck
         {
             get
             {
-                return mEnableStrictCheck;
+                return bEnableStrictCheck;
             }
             set
             {
-                mEnableStrictCheck = value;
+                bEnableStrictCheck = value;
             }
         }
 
@@ -32,7 +32,7 @@ namespace GameFramework
         {
             get
             {
-                return s_ReferenceCollections.Count;
+                return ReferenceCollections.Count;
             }
         }
 
@@ -41,10 +41,10 @@ namespace GameFramework
             int index = 0;
             ReferencePoolInfo[] results = null;
 
-            lock (s_ReferenceCollections)
+            lock (ReferenceCollections)
             {
-                results = new ReferencePoolInfo[s_ReferenceCollections.Count];
-                foreach (KeyValuePair<Type, ReferenceCollection> referenceCollection in s_ReferenceCollections)
+                results = new ReferencePoolInfo[ReferenceCollections.Count];
+                foreach (KeyValuePair<Type, ReferenceCollection> referenceCollection in ReferenceCollections)
                 {
                     results[index++] = new ReferencePoolInfo(referenceCollection.Key, referenceCollection.Value.UnusedReferenceCount, referenceCollection.Value.UsingReferenceCount, referenceCollection.Value.AcquireReferenceCount, referenceCollection.Value.ReleaseReferenceCount, referenceCollection.Value.AddReferenceCount, referenceCollection.Value.RemoveReferenceCount);
                 }
@@ -55,14 +55,14 @@ namespace GameFramework
 
         public static void ClearAll()
         {
-            lock (s_ReferenceCollections)
+            lock (ReferenceCollections)
             {
-                foreach (KeyValuePair<Type, ReferenceCollection> referenceCollection in s_ReferenceCollections)
+                foreach (KeyValuePair<Type, ReferenceCollection> referenceCollection in ReferenceCollections)
                 {
                     referenceCollection.Value.RemoveAll();
                 }
 
-                s_ReferenceCollections.Clear();
+                ReferenceCollections.Clear();
             }
         }
 
@@ -124,7 +124,7 @@ namespace GameFramework
 
         private static void InternalCheckReferenceType(Type referenceType)
         {
-            if (!mEnableStrictCheck)
+            if (!bEnableStrictCheck)
             {
                 return;
             }
@@ -153,12 +153,12 @@ namespace GameFramework
             }
 
             ReferenceCollection referenceCollection = null;
-            lock (s_ReferenceCollections)
+            lock (ReferenceCollections)
             {
-                if (!s_ReferenceCollections.TryGetValue(referenceType, out referenceCollection))
+                if (!ReferenceCollections.TryGetValue(referenceType, out referenceCollection))
                 {
                     referenceCollection = new ReferenceCollection(referenceType);
-                    s_ReferenceCollections.Add(referenceType, referenceCollection);
+                    ReferenceCollections.Add(referenceType, referenceCollection);
                 }
             }
 

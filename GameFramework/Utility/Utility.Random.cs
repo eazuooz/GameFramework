@@ -14,36 +14,36 @@ namespace GameFramework
     {
         public static class Random
         {
-            private static System.Random s_Random = new System.Random((int)DateTime.UtcNow.Ticks);
+            private static System.Random RandomSystem = new System.Random((int)DateTime.UtcNow.Ticks);
 
             public static void SetSeed(int seed)
             {
-                s_Random = new System.Random(seed);
+                RandomSystem = new System.Random(seed);
             }
 
             public static int GetRandom()
             {
-                return s_Random.Next();
+                return RandomSystem.Next();
             }
 
             public static int GetRandom(int maxValue)
             {
-                return s_Random.Next(maxValue);
+                return RandomSystem.Next(maxValue);
             }
 
             public static int GetRandom(int minValue, int maxValue)
             {
-                return s_Random.Next(minValue, maxValue);
+                return RandomSystem.Next(minValue, maxValue);
             }
 
             public static double GetRandomDouble()
             {
-                return s_Random.NextDouble();
+                return RandomSystem.NextDouble();
             }
 
             public static void GetRandomBytes(byte[] buffer)
             {
-                s_Random.NextBytes(buffer);
+                RandomSystem.NextBytes(buffer);
             }
         }
     }

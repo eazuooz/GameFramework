@@ -19,7 +19,7 @@ namespace GameFramework.FileSystem
         private const int CachedBytesLength = 0x1000;
 
         private static readonly string[] EmptyStringArray = new string[] { };
-        private static readonly byte[] s_CachedBytes = new byte[CachedBytesLength];
+        private static readonly byte[] CachedBytes = new byte[CachedBytesLength];
 
         private static readonly int HeaderDataSize = Marshal.SizeOf(typeof(HeaderData));
         private static readonly int BlockDataSize = Marshal.SizeOf(typeof(BlockData));
@@ -127,11 +127,11 @@ namespace GameFramework.FileSystem
             FileSystem fileSystem = new FileSystem(fullPath, access, stream);
             fileSystem.mHeaderData = new HeaderData(maxFileCount, maxBlockCount);
             CalcOffsets(fileSystem);
-            Utility.Marshal.StructureToBytes(fileSystem.mHeaderData, HeaderDataSize, s_CachedBytes);
+            Utility.Marshal.StructureToBytes(fileSystem.mHeaderData, HeaderDataSize, CachedBytes);
 
             try
             {
-                stream.Write(s_CachedBytes, 0, HeaderDataSize);
+                stream.Write(CachedBytes, 0, HeaderDataSize);
                 stream.SetLength(fileSystem.mFileDataOffset);
                 return fileSystem;
             }
@@ -146,8 +146,8 @@ namespace GameFramework.FileSystem
         {
             FileSystem fileSystem = new FileSystem(fullPath, access, stream);
 
-            stream.Read(s_CachedBytes, 0, HeaderDataSize);
-            fileSystem.mHeaderData = Utility.Marshal.BytesToStructure<HeaderData>(HeaderDataSize, s_CachedBytes);
+            stream.Read(CachedBytes, 0, HeaderDataSize);
+            fileSystem.mHeaderData = Utility.Marshal.BytesToStructure<HeaderData>(HeaderDataSize, CachedBytes);
             if (!fileSystem.mHeaderData.IsValid)
             {
                 return null;
@@ -162,8 +162,8 @@ namespace GameFramework.FileSystem
 
             for (int i = 0; i < fileSystem.mHeaderData.BlockCount; i++)
             {
-                stream.Read(s_CachedBytes, 0, BlockDataSize);
-                BlockData blockData = Utility.Marshal.BytesToStructure<BlockData>(BlockDataSize, s_CachedBytes);
+                stream.Read(CachedBytes, 0, BlockDataSize);
+                BlockData blockData = Utility.Marshal.BytesToStructure<BlockData>(BlockDataSize, CachedBytes);
                 fileSystem.mBlockDatas.Add(blockData);
             }
 
@@ -1118,30 +1118,30 @@ namespace GameFramework.FileSystem
         private void WriteHeaderData()
         {
             mHeaderData = mHeaderData.SetBlockCount(mBlockDatas.Count);
-            Utility.Marshal.StructureToBytes(mHeaderData, HeaderDataSize, s_CachedBytes);
+            Utility.Marshal.StructureToBytes(mHeaderData, HeaderDataSize, CachedBytes);
             mStream.Position = 0L;
-            mStream.Write(s_CachedBytes, 0, HeaderDataSize);
+            mStream.Write(CachedBytes, 0, HeaderDataSize);
         }
 
         private void WriteBlockData(int blockIndex)
         {
-            Utility.Marshal.StructureToBytes(mBlockDatas[blockIndex], BlockDataSize, s_CachedBytes);
+            Utility.Marshal.StructureToBytes(mBlockDatas[blockIndex], BlockDataSize, CachedBytes);
             mStream.Position = mBlockDataOffset + BlockDataSize * blockIndex;
-            mStream.Write(s_CachedBytes, 0, BlockDataSize);
+            mStream.Write(CachedBytes, 0, BlockDataSize);
         }
 
         private StringData ReadStringData(int stringIndex)
         {
             mStream.Position = mStringDataOffset + StringDataSize * stringIndex;
-            mStream.Read(s_CachedBytes, 0, StringDataSize);
-            return Utility.Marshal.BytesToStructure<StringData>(StringDataSize, s_CachedBytes);
+            mStream.Read(CachedBytes, 0, StringDataSize);
+            return Utility.Marshal.BytesToStructure<StringData>(StringDataSize, CachedBytes);
         }
 
         private void WriteStringData(int stringIndex, StringData stringData)
         {
-            Utility.Marshal.StructureToBytes(stringData, StringDataSize, s_CachedBytes);
+            Utility.Marshal.StructureToBytes(stringData, StringDataSize, CachedBytes);
             mStream.Position = mStringDataOffset + StringDataSize * stringIndex;
-            mStream.Write(s_CachedBytes, 0, StringDataSize);
+            mStream.Write(CachedBytes, 0, StringDataSize);
         }
 
         private static void CalcOffsets(FileSystem fileSystem)

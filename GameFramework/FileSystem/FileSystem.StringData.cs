@@ -16,7 +16,7 @@ namespace GameFramework.FileSystem
         [StructLayout(LayoutKind.Sequential)]
         private struct StringData
         {
-            private static readonly byte[] s_CachedBytes = new byte[byte.MaxValue + 1];
+            private static readonly byte[] CachedBytes = new byte[byte.MaxValue + 1];
 
             private readonly byte mLength;
 
@@ -36,9 +36,9 @@ namespace GameFramework.FileSystem
                     return null;
                 }
 
-                Array.Copy(mBytes, 0, s_CachedBytes, 0, mLength);
-                Utility.Encryption.GetSelfXorBytes(s_CachedBytes, 0, mLength, encryptBytes);
-                return Utility.Converter.GetString(s_CachedBytes, 0, mLength);
+                Array.Copy(mBytes, 0, CachedBytes, 0, mLength);
+                Utility.Encryption.GetSelfXorBytes(CachedBytes, 0, mLength, encryptBytes);
+                return Utility.Converter.GetString(CachedBytes, 0, mLength);
             }
 
             public StringData SetString(string value, byte[] encryptBytes)
@@ -48,14 +48,14 @@ namespace GameFramework.FileSystem
                     return Clear();
                 }
 
-                int length = Utility.Converter.GetBytes(value, s_CachedBytes);
+                int length = Utility.Converter.GetBytes(value, CachedBytes);
                 if (length > byte.MaxValue)
                 {
                     throw new GameFrameworkException(Utility.Text.Format("String '{0}' is too long.", value));
                 }
 
-                Utility.Encryption.GetSelfXorBytes(s_CachedBytes, encryptBytes);
-                Array.Copy(s_CachedBytes, 0, mBytes, 0, length);
+                Utility.Encryption.GetSelfXorBytes(CachedBytes, encryptBytes);
+                Array.Copy(CachedBytes, 0, mBytes, 0, length);
                 return new StringData((byte)length, mBytes);
             }
 

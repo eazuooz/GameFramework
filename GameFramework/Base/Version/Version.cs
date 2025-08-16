@@ -12,7 +12,7 @@ namespace GameFramework
     {
         public static void SetVersionHelper(IVersionHelper versionHelper)
         {
-            s_VersionHelper = versionHelper;
+            VersionHelper = versionHelper;
         }
 
         public static string GameFrameworkVersion
@@ -27,12 +27,12 @@ namespace GameFramework
         {
             get
             {
-                if (s_VersionHelper == null)
+                if (VersionHelper == null)
                 {
                     return string.Empty;
                 }
 
-                return s_VersionHelper.GameVersion;
+                return VersionHelper.GameVersion;
             }
         }
 
@@ -40,17 +40,17 @@ namespace GameFramework
         {
             get
             {
-                if (s_VersionHelper == null)
+                if (VersionHelper == null)
                 {
                     return 0;
                 }
 
-                return s_VersionHelper.InternalGameVersion;
+                return VersionHelper.InternalGameVersion;
             }
         }
 
         private const string GameFrameworkVersionString = "2021.05.31";
 
-        private static IVersionHelper s_VersionHelper = null;
+        private static IVersionHelper VersionHelper = null;
     }
 }

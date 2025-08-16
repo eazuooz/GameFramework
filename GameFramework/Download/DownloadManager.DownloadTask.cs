@@ -12,7 +12,7 @@ namespace GameFramework.Download
     {
         private sealed class DownloadTask : TaskBase
         {
-            private static int s_Serial = 0;
+            private static int Serial = 0;
 
             private DownloadTaskStatus mStatus;
             private string mDownloadPath;
@@ -84,7 +84,7 @@ namespace GameFramework.Download
             public static DownloadTask Create(string downloadPath, string downloadUri, string tag, int priority, int flushSize, float timeout, object userData)
             {
                 DownloadTask downloadTask = ReferencePool.Acquire<DownloadTask>();
-                downloadTask.Initialize(++s_Serial, tag, priority, userData);
+                downloadTask.Initialize(++Serial, tag, priority, userData);
                 downloadTask.mDownloadPath = downloadPath;
                 downloadTask.mDownloadUri = downloadUri;
                 downloadTask.mFlushSize = flushSize;

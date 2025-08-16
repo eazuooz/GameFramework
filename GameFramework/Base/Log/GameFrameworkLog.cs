@@ -12,97 +12,97 @@ namespace GameFramework
     {
         public static void SetLogHelper(ILogHelper logHelper)
         {
-            s_LogHelper = logHelper;
+            LogHelper = logHelper;
         }
 
         public static void Debug(object message)
         {
-            if (s_LogHelper == null)
+            if (LogHelper == null)
             {
                 return;
             }
 
-            s_LogHelper.Log(GameFrameworkLogLevel.Debug, message);
+            LogHelper.Log(GameFrameworkLogLevel.Debug, message);
         }
 
         public static void Debug(string message)
         {
-            if (s_LogHelper == null)
+            if (LogHelper == null)
             {
                 return;
             }
 
-            s_LogHelper.Log(GameFrameworkLogLevel.Debug, message);
+            LogHelper.Log(GameFrameworkLogLevel.Debug, message);
         }
 
         public static void Debug<T>(string format, T arg)
         {
-            if (s_LogHelper == null)
+            if (LogHelper == null)
             {
                 return;
             }
 
-            s_LogHelper.Log(GameFrameworkLogLevel.Debug, Utility.Text.Format(format, arg));
+            LogHelper.Log(GameFrameworkLogLevel.Debug, Utility.Text.Format(format, arg));
         }
 
         public static void Debug<T1, T2>(string format, T1 arg1, T2 arg2)
         {
-            if (s_LogHelper == null)
+            if (LogHelper == null)
             {
                 return;
             }
 
-            s_LogHelper.Log(GameFrameworkLogLevel.Debug, Utility.Text.Format(format, arg1, arg2));
+            LogHelper.Log(GameFrameworkLogLevel.Debug, Utility.Text.Format(format, arg1, arg2));
         }
 
         // ... 계속해서 모든 Debug 메서드들에 대해 동일한 패턴으로 번역 ...
 
         public static void Info(object message)
         {
-            if (s_LogHelper == null)
+            if (LogHelper == null)
             {
                 return;
             }
 
-            s_LogHelper.Log(GameFrameworkLogLevel.Info, message);
+            LogHelper.Log(GameFrameworkLogLevel.Info, message);
         }
 
         // ... 모든 Info 메서드들에 대해 동일한 패턴으로 번역 ...
 
         public static void Warning(object message)
         {
-            if (s_LogHelper == null)
+            if (LogHelper == null)
             {
                 return;
             }
 
-            s_LogHelper.Log(GameFrameworkLogLevel.Warning, message);
+            LogHelper.Log(GameFrameworkLogLevel.Warning, message);
         }
 
         // ... 모든 Warning 메서드들에 대해 동일한 패턴으로 번역 ...
 
         public static void Error(object message)
         {
-            if (s_LogHelper == null)
+            if (LogHelper == null)
             {
                 return;
             }
 
-            s_LogHelper.Log(GameFrameworkLogLevel.Error, message);
+            LogHelper.Log(GameFrameworkLogLevel.Error, message);
         }
 
         // ... 모든 Error 메서드들에 대해 동일한 패턴으로 번역 ...
 
         public static void Fatal(object message)
         {
-            if (s_LogHelper == null)
+            if (LogHelper == null)
             {
                 return;
             }
 
-            s_LogHelper.Log(GameFrameworkLogLevel.Fatal, message);
+            LogHelper.Log(GameFrameworkLogLevel.Fatal, message);
         }
 
-        private static ILogHelper s_LogHelper = null;
+        private static ILogHelper LogHelper = null;
     }
 }

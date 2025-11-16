@@ -9,4 +9,8 @@
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
   </Target>
 
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="XCOPY &quot;$(TargetDir)$(TargetName).*&quot; &quot;D:\Github\ToyboxNightmare\Assets\Plugins\&quot; /Y /I" />
+  </Target>
+
 </Project>

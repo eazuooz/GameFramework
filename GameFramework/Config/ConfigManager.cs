@@ -9,6 +9,7 @@
 using GameFramework.Resource;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace GameFramework.Config
 {
@@ -256,10 +257,10 @@ namespace GameFramework.Config
             bool.TryParse(configValue, out boolValue);
 
             int intValue = 0;
-            int.TryParse(configValue, out intValue);
+            int.TryParse(configValue, NumberStyles.Integer, CultureInfo.InvariantCulture, out intValue);
 
             float floatValue = 0f;
-            float.TryParse(configValue, out floatValue);
+            float.TryParse(configValue, NumberStyles.Float | NumberStyles.AllowThousands, CultureInfo.InvariantCulture, out floatValue);
 
             return AddConfig(configName, boolValue, intValue, floatValue, configValue);
         }

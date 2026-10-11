@@ -9,8 +9,18 @@
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
   </Target>
 
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="XCOPY &quot;$(TargetDir)$(TargetName).*&quot; &quot;D:\Github\ToyboxNightmare\Assets\Plugins\&quot; /Y /I" />
+  <!--
+    This repository is meant to be cloned into <UnityProject>/External/GameFramework.
+    After a build, the outputs are copied to that Unity project's Assets/Plugins folder.
+    The path is relative to this project file, so it works wherever the Unity project lives.
+    When the repository is built on its own (no Unity project around it), nothing is copied.
+  -->
+  <PropertyGroup>
+    <UnityAssetsDir>$(ProjectDir)..\..\..\Assets\</UnityAssetsDir>
+  </PropertyGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="Exists('$(UnityAssetsDir)')">
+    <Exec Command="XCOPY &quot;$(TargetDir)$(TargetName).*&quot; &quot;$(UnityAssetsDir)Plugins\&quot; /Y /I" />
   </Target>
 
 </Project>
